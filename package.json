@@ -8,7 +8,7 @@
     "start": "nodemon src/local.js"
   },
   "keywords": [],
-  "author": "Arya, Tushar, Harsh, Lakshya",
+  "author": "Arya, Tushar, Harsh, Lakshya, Liza",
   "license": "ISC",
   "devDependencies": {
     "@vendia/serverless-express": "^4.12.6",

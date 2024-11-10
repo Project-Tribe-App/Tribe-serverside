@@ -2,6 +2,15 @@
 
 Welcome to the **Tribe API** server-side repository! This project is part of a social networking platform tailored for student travelers and travel enthusiasts. It enables users to connect, share travel experiences, find homestays, and join travel squads. 
 
+## API Architecture
+
+<img src='./arch_images/server_arch.webp' width=800>
+
+## Websocket Architecture
+
+<img src='./arch_images/websocker_arch.webp' width=800>
+
+
 ## Table of Contents
 
 - [Features](#features)

@@ -3,6 +3,7 @@ const { handleRouteErrors } = require('./error');
 const connectToMongo = require('./config/database');
 const userRouter = require('./routes/user-route')
 const authRouter = require('./routes/auth-routes');
+const chatRouter = require("./socket/chat-route");
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 // routes
-app.use('/', [userRouter, authRouter]);
+app.use('/', [userRouter, authRouter, chatRouter]);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

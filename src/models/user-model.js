@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    squads:{
+      type: Array,
+      default: [],
+    },
     refreshToken: {
       type: String,
       default: null,

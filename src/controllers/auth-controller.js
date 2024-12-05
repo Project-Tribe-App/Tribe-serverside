@@ -15,10 +15,9 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return Response.unauthorized(res,"Invalid credentials" );
         }
-
         const token = await authService.tokenGenerator(user.username);
         const refreshToken = await authService.refreshTokenGenerator(user.username);
-
+        
         await authService.saveRefreshToken(refreshToken, user.username);
 
         res.json({ status: true, authToken: token, refreshToken: refreshToken });

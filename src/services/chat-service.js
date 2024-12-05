@@ -1,6 +1,5 @@
-const { chatRoom } = require("../models/chat-model")
-const User = require("../models/user-model")
 const { chatRoom } = require("../models/chat-model");
+const User = require("../models/user-model");
 const { v4: uuidv4 } = require("uuid");
 
 class ChatService {
@@ -10,49 +9,51 @@ class ChatService {
                 { _id: userId },
                 { $push: { squads: roomId } }
             );
+           
             if (!user) {
-                return new Error("User not found ")
+                return new Error("User not found");
             }
             return true;
-        }
-        catch (err) {
+        } catch (err) {
+            console.log(err)
             throw err;
         }
     }
+
     static async getAllRooms(userId) {
         try {
             let user = await User.findOne(
-                { _id: userId },
+                { _id: userId }
             );
             if (!user) {
-                return new Error("User not found ")
+                return new Error("User not found");
             }
             return user.squads;
-        }
-        catch (err) {
+        } catch (err) {
             throw err;
         }
-
     }
+
     static async leaveChatRoom(userId, roomId) {
         try {
             let user = await User.findOneAndUpdate(
                 { _id: userId },
-                { $pop: { squads: roomId } }
+                { $pull: { squads: roomId } }
             );
             if (!user) {
-                return new Error("User not found ")
+                return new Error("User not found");
             }
             return true;
-        }
-        catch (err) {
+        } catch (err) {
             throw err;
         }
     }
+
     static async createRoom(
         squadName,
         squadProfilePicture,
         description,
+        adminId
     ) {
         try {
             const roomId = uuidv4();
@@ -60,15 +61,14 @@ class ChatService {
                 squadName,
                 squadProfilePicture,
                 description,
-                roomId
+                roomId,
+                adminId
             });
             return await createRoom.save();
         } catch (err) {
             throw err;
-
         }
     }
-
-
 }
-module.exports = ChatService
+
+module.exports = ChatService;

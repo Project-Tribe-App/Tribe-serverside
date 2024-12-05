@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     squads:{
-      type: Array,
+      type: [String],
       default: [],
     },
     refreshToken: {

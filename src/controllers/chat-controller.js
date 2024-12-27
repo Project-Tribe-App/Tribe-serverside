@@ -1,73 +1,80 @@
 const Response = require("../utils/response");
-const chatService = require("../services/chat-service")
+const chatService = require("../services/chat-service");
+
 exports.joinChatRoom = async (req, res) => {
-
   try {
-    const { roomId, userId } = req.body;
-    let response = await chatService.joinChatRoom(userId, roomId);
-    if (response.message === "User not found") {
-      return Response.unauthorized(res, "User not found");
+    const { roomId, username } = req.body;
+    const response = await chatService.joinChatRoom(username, roomId);
 
-    }
-    else {
-      return Response.success(res, "User has joined room successfully");
+    if (response instanceof Error) {
+      switch (response.message) {
+        case "User not found":
+          return Response.unauthorized(res, "User not found");
+        case "Room not found":
+          return Response.notFound(res, "Room not found");
+        case "Group administrator cannot join the group explicitly":
+          return Response.badRequest(res, "Group administrator cannot join the group explicitly");
+        default:
+          return Response.error(res, "Unexpected error occurred");
+      }
     }
 
+    return Response.success(res, "User has joined room successfully");
+  } catch (error) {
+    console.log(error);
+    return Response.error(res, "server error");
   }
-  catch (error) {
-    console.log(error)
-    return Response.error(res, "server error")
-  }
-}
+};
+
 exports.getAllChatRooms = async (req, res) => {
   try {
-    const { userId } = req.body;
-    let response = await chatService.getAllRooms(userId);
-    if (response.message === "User not found") {
+    const { username } = req.body;
+    const response = await chatService.getAllRooms(username);
+
+    if (response instanceof Error && response.message === "User not found") {
       return Response.unauthorized(res, "User not found");
-
-    }
-    else {
-      return res.status(200).json({ status: 200, message: response });
     }
 
+    return res.status(200).json({ status: 200, message: response });
+  } catch (error) {
+    console.log(error);
+    return Response.error(res, "server error");
   }
-  catch (error) {
+};
 
-    return Response.error(res, "server error")
-  }
-}
 exports.leaveChatRoom = async (req, res) => {
   try {
-    const { userId, roomId } = req.body;
-    let response = await chatService.leaveChatRoom(userId, roomId);
-    if (response.message === "User not found") {
-      return Response.unauthorized(res, "User not found");
+    const { username, roomId } = req.body;
+    const response = await chatService.leaveChatRoom(username, roomId);
 
+    if (response instanceof Error) {
+      switch (response.message) {
+        case "User not found":
+          return Response.unauthorized(res, "User not found");
+        case "Room not found":
+          return Response.notFound(res, "Room not found");
+        default:
+          return Response.error(res, "Unexpected error occurred");
+      }
     }
-    else {
-      return Response.success(res, "User has left room successfully");
-    }
+
+    return Response.success(res, "User has left room successfully");
+  } catch (error) {
+    console.log(error);
+    return Response.error(res, "server error");
   }
-  catch (error) {
-    console.log(error)
-    return Response.error(res, "server error")
-  }
-}
+};
+
 exports.createRoom = async (req, res) => {
   try {
-    let {
-      squadName,
-      squadProfilePicture,
-      description,
-      adminId
-    } = req.body;
-    let response = chatService.createRoom(squadName, squadProfilePicture, description, adminId);
+    const { squadName, squadProfilePicture, description, adminId } = req.body;
+    const response = await chatService.createRoom(squadName, squadProfilePicture, description, adminId);
+
     if (response) {
-      return Response.success(res, "Squad created successfully");
+      return res.json({ status: 200, message: "Squad created successfully", data: response });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return Response.badRequest(res, "Squad creation failed");
   }
-}
+};

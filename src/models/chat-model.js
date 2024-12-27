@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Usermodel = require("../models/user-model");
 
 // message schema
 const chatModelSchema = new mongoose.Schema(
@@ -30,8 +31,10 @@ const chatRoomSchema = new mongoose.Schema(
     squadProfilePicture: {type: String, required: true},
     description: {type: String, required: true},
     roomId: {type: String, required: true},
-    adminId:{type:String,required:true}
-    //members: [memberModelSchema],
+    adminId:{type:String,required:true},
+    members: [{
+      type: String
+    }]
   }
 )
 

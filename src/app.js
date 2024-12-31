@@ -17,7 +17,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 // routes
-app.use('/', [userRouter, authRouter, chatRouter]);
+// app.use('/', [userRouter, authRouter, chatRouter]);
+//API Gateway might not route correctly unless these are explicitly set.
+app.use('/user', userRouter);
+app.use('/auth', authRouter);
+app.use('/chat', chatRouter);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -26,12 +30,15 @@ app.use((err, req, res, next) => {
 });
 
 // Not Found Handler
-app.use('*', (_req, res) => {
-  res.status(404).json({
-    status: 'Not Found',
-    message: "This route doesn't exists!",
-  });
+// app.use('*', (_req, res) => {
+//   res.status(404).json({
+//     status: 'Not Found',
+//     message: "This route doesn't exists!",
+//   });
+// });
+//Added a simple route to verify the app is working
+app.use('/', (_req, res) => {
+  res.status(200).json({ message: 'API is working!' });
 });
-
 
 module.exports = app;

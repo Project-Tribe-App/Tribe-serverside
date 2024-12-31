@@ -1,5 +1,26 @@
 const Response = require("../utils/response");
 const chatService = require("../services/chat-service");
+const { fetchRoomProfile } = require('../services/roomService');
+
+exports.getRoomProfile = async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const roomProfile = await fetchRoomProfile(roomId);
+
+    return res.json({
+      status:200,
+      data: roomProfile,
+    });
+  } catch (error) {
+    console.error("Error in getRoomProfile:", error.message);
+
+    return res.json({
+      status: 500,
+      message: error.message || "An error occurred.",
+    });
+  }
+};
+
 
 exports.joinChatRoom = async (req, res) => {
   try {

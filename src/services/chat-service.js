@@ -3,6 +3,27 @@ const User = require("../models/user-model");
 const { v4: uuidv4 } = require("uuid");
 
 class ChatService {
+  
+static async  fetchRoomProfile (roomId){
+  if (!roomId) {
+    throw new Error("Room ID is required.");
+  }
+
+  
+  const room = await ChatRoom.findOne({ roomId });
+
+  if (!room) {
+    throw new Error("Room not found.");
+  }
+  
+  return {
+    squadName: room.squadName,
+    squadProfilePicture: room.squadProfilePicture,
+    description: room.description,
+    adminId: room.adminId,
+    membersCount: room.members.length,
+  };
+}
   static async joinChatRoom(username, roomId) {
     try {
       const room = await chatRoom.findOne({ roomId });

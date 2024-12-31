@@ -7,5 +7,6 @@ router.post('/join-room', auth, chatController.joinChatRoom);
 router.post('/leave-room', auth, chatController.leaveChatRoom);
 router.get('/all-chat-rooms', auth, chatController.getAllChatRooms);
 router.post("/create-room", auth,chatController.createRoom);
+router.get("/fetch-room",auth,chatController.getRoomProfile);
 
 module.exports = router;

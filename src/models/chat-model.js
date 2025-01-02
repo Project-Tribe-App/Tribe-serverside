@@ -32,14 +32,12 @@ const chatRoomSchema = new mongoose.Schema(
     description: {type: String, required: true},
     roomId: {type: String, required: true},
     adminId:{type:String,required:true},
-    members: [{
-      type: String
-    }]
+    members: [Object]
   }
 )
 
 // Export both models
 const chatMessage = mongoose.model('ChatMessage', chatModelSchema);
-const chatRoom = mongoose.model('ChatRoom', chatRoomSchema);
+const chatRoom = mongoose.model('ChatRooms', chatRoomSchema);
 
 module.exports = { chatMessage, chatRoom };

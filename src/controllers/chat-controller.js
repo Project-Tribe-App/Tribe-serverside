@@ -6,7 +6,7 @@ exports.getRoomProfile = async (req, res) => {
     const { roomId } = req.params;
     const roomProfile = await chatService.fetchRoomProfile(roomId);
 
-    return res.json({status:200,message:"Room profile fetched successfully", data:roomProfile});
+    res.json({status:true,message:"Room profile fetched successfully", data:roomProfile});
   } catch (error) {
     console.error("Error in getRoomProfile:", error.message);
     return Response.error(res, error.message || "An error occurred");
@@ -49,7 +49,7 @@ exports.getAllChatRooms = async (req, res) => {
       return Response.unauthorized(res, "User not found");
     }
 
-    return res.json({status:200,message:"Chat rooms fetched successfully",data:response});
+    res.json({status:true,message:"Chat rooms fetched successfully",data:response});
   } catch (error) {
     console.error("Error in getAllChatRooms:", error.message);
     return Response.error(res, error.message || "Server error");
@@ -85,8 +85,8 @@ exports.leaveChatRoom = async (req, res) => {
 
 exports.createRoom = async (req, res) => {
   try {
-    const { squadName, squadProfilePicture, description, adminId } = req.body;
-    const response = await chatService.createRoom(squadName, squadProfilePicture, description, adminId);
+    const { squadName, squadProfilePicture, description, adminName,adminUserName } = req.body;
+    const response = await chatService.createRoom(squadName, squadProfilePicture, description, adminName,adminUserName);
 
     if (response instanceof Error) {
       switch (response.message) {
@@ -97,7 +97,7 @@ exports.createRoom = async (req, res) => {
       }
     }
 
-    return res.json({status:200,message:"Squad created successfully",data:response});
+   res.json({status:true,message:"Squad created successfully",data:response});
   } catch (error) {
     console.error("Error in createRoom:", error.message);
     return Response.badRequest(res, "Squad creation failed");

@@ -122,10 +122,11 @@ class ChatService {
     }
   }
 
-  static async createRoom(squadName, squadProfilePicture, description, adminId) {
+  static async createRoom(squadName, squadProfilePicture, description, adminName,adminUserName) {
     try {
+      let adminId=adminUserName
       const roomId = uuidv4();
-      const existingRoom = await chatRoom.findOne({ squadName, adminId });
+      const existingRoom = await chatRoom.findOne({ squadName, adminUserName });
       if (existingRoom) {
         return new Error("Room is already created by this admin");
       }
@@ -136,12 +137,12 @@ class ChatService {
         description,
         roomId,
         adminId,
-        members: [{ name: adminId, username: adminId }],
+        members: [{ name: adminName, username: adminId }],
       });
   
       await newRoom.save();
       await User.findOneAndUpdate(
-        { username: adminId },
+        { username: adminId},
         {
           $addToSet: {
             squads: {

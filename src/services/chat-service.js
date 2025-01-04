@@ -3,13 +3,13 @@ const User = require("../models/user-model");
 const { v4: uuidv4 } = require("uuid");
 
 class ChatService {
-  static async fetchRoomProfile(roomId) {
+  static async fetchSquadProfile(roomId) {
     if (!roomId) {
-      throw new Error("Room ID is required.");
+      throw new Error("Squad ID is required.");
     }
     const room = await chatRoom.findOne({ roomId });
     if (!room) {
-      throw new Error("Room not found.");
+      throw new Error("Squad not found.");
     }
     return {
       squadName: room.squadName,
@@ -20,17 +20,17 @@ class ChatService {
     };
   }
 
-  static async joinChatRoom(username, roomId) {
+  static async joinSquad(username, roomId) {
     try {
-      const room = await chatRoom.findOne({ roomId });
+      const squad = await chatRoom.findOne({ roomId });
       if (!room) {
-        return new Error("Room not found");
+        return new Error("Squad not found");
       }
-      if (room.members.some(member => member.username === username)) {
-        return new Error("User already added to the room");
+      if (squad.members.some(member => member.username === username)) {
+        return new Error("User already added to the squad");
       }
-      if (username === room.adminId) {
-        return new Error("Group administrator cannot join the group explicitly");
+      if (username === squad.adminId) {
+        return new Error("Group administrator cannot join the squad explicitly");
       }
 
       const user = await User.findOneAndUpdate(
@@ -38,9 +38,9 @@ class ChatService {
         {
           $addToSet: {
             squads: {
-              squadName: room.squadName,
-              squadProfilePicture: room.squadProfilePicture,
-              membersCount: room.members.length + 1,
+              squadName: squad.squadName,
+              squadProfilePicture: squad.squadProfilePicture,
+              membersCount: squad.members.length + 1,
             },
           },
         },
@@ -61,14 +61,14 @@ class ChatService {
           }
         }
       );
-      return room;
+      return squad;
     } catch (err) {
       console.error(err);
       throw err;
     }
   }
 
-  static async getAllRooms(username) {
+  static async getAllSquads(username) {
     try {
       const user = await User.findOne({ username });
       if (!user) {
@@ -81,20 +81,20 @@ class ChatService {
     }
   }
 
-  static async leaveChatRoom(username, roomId) {
+  static async leaveSquad(username, roomId) {
     try {
-      const room = await chatRoom.findOne({ roomId });
-      if (!room) {
-        return new Error("Room not found");
+      const squad = await chatRoom.findOne({ roomId });
+      if (!squad) {
+        return new Error("Squad not found");
       }
-      if (!room.members.some(member => member.username === username)) {
+      if (!squad.members.some(member => member.username === username)) {
         return new Error("User already left the room");
       }
-      if (username === room.adminId) {
-        if (room.members.length <= 1) {
+      if (username === squad.adminId) {
+        if (squad.members.length <= 1) {
           return new Error("Admin cannot leave as there are no other members to assign as admin");
         }
-        const nextAdmin = room.members.find(member => member.username !== room.adminId);
+        const nextAdmin = squad.members.find(member => member.username !== squad.adminId);
         if (!nextAdmin) {
           return new Error("No members available to assign as admin");
         }
@@ -113,25 +113,25 @@ class ChatService {
       }
       await User.findOneAndUpdate(
         { username },
-        { $pull: { squads: { squadName: room.squadName } } }
+        { $pull: { squads: { squadName: squad.squadName } } }
       );
-      return room;
+      return squad;
     } catch (err) {
       console.error(err);
       throw err;
     }
   }
 
-  static async createRoom(squadName, squadProfilePicture, description, adminName,adminUserName) {
+  static async createSquad(squadName, squadProfilePicture, description, adminName,adminUserName) {
     try {
       let adminId=adminUserName
       const roomId = uuidv4();
-      const existingRoom = await chatRoom.findOne({ squadName, adminUserName });
-      if (existingRoom) {
-        return new Error("Room is already created by this admin");
+      const existingSquad = await chatRoom.findOne({ squadName, adminUserName });
+      if (existingSquad) {
+        return new Error("Squad is already created by this admin");
       }
   
-      const newRoom = new chatRoom({
+      const newSquad = new chatRoom({
         squadName,
         squadProfilePicture,
         description,
@@ -140,31 +140,31 @@ class ChatService {
         members: [{ name: adminName, username: adminId }],
       });
   
-      await newRoom.save();
+      await newSquad.save();
       await User.findOneAndUpdate(
         { username: adminId},
         {
           $addToSet: {
             squads: {
-              squadName: newRoom.squadName,
-              squadProfilePicture: newRoom.squadProfilePicture,
-              membersCount: newRoom.members.length,
+              squadName: newSquad.squadName,
+              squadProfilePicture: newSquad.squadProfilePicture,
+              membersCount: newSquad.members.length,
             },
           },
         }
       );
   
       return {
-        squadName: newRoom.squadName,
-        squadProfilePicture: newRoom.squadProfilePicture,
-        description: newRoom.description,
-        roomId: newRoom.roomId,
-        adminId: newRoom.adminId,
-        members: newRoom.members,
+        squadName: newSquad.squadName,
+        squadProfilePicture: newSquad.squadProfilePicture,
+        description: newSquad.description,
+        roomId: newSquad.roomId,
+        adminId: newSquad.adminId,
+        members: newSquad.members,
       };
     } catch (err) {
-      console.error("Error in createRoom:", err.message);
-      throw new Error("Failed to create room. Please try again later.");
+      console.error("Error in createSquad:", err.message);
+      throw new Error("Failed to create squad. Please try again later.");
     }
   }
 }

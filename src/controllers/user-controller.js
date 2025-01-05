@@ -26,41 +26,41 @@ exports.register = async (req, res) => {
 
     console.log(response);
 
-    if(response){
-      return Response.success(res,"User registered successfully");
+    if (response) {
+      return Response.success(res, "User registered successfully");
     }
-    else{
-      return Response.badRequest(res,"User registration failed");
+    else {
+      return Response.badRequest(res, "User registration failed");
     }
   } catch (error) {
     if (
       error.message === "Email is already registered" ||
       error.message === "Username is already taken"
     ) {
-      return Response.conflict(res,error.message); // Conflict status code
+      return Response.conflict(res, error.message); // Conflict status code
     }
     console.error(error);
-    return Response.error(res,"Internal server error");
-    
+    return Response.error(res, "Internal server error");
+
   }
 };
 exports.getProfile = async (req, res) => {
   try {
     const { username } = req.params;
     if (!username) {
-      return Response.badRequest(res,"Username is required");
+      return Response.badRequest(res, "Username is required");
     }
     const profile = await userService.getProfile(username);
     if (!profile) {
-      return Response.notFound(res,"User not found");
+      return Response.notFound(res, "User not found");
     } else {
-      return Response.success(res,profile);
-     
+      return Response.success(res, profile);
+
     }
   } catch (error) {
     console.error(error);
-    return Response.error( res,"Internal server error");
-   
+    return Response.error(res, "Internal server error");
+
   }
 };
 
@@ -71,15 +71,15 @@ exports.updateUser = async function patchResource(req, res) {
 
   try {
     await userService.updateUser(username, updateData);
-    return Response.success(res,"User updated successfully");
+    return Response.success(res, "User updated successfully");
   } catch (error) {
     // Ensure you check for the error message correctly
     if (error.message === "User not found") {
-      return Response.notFound(res,error.message);
+      return Response.notFound(res, error.message);
     }
     // This catch block should correctly reference res
     console.error(error);
-    return Response.error(res,"Internal server error");
-    
+    return Response.error(res, "Internal server error");
+
   }
 };

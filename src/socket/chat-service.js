@@ -1,4 +1,4 @@
-const { chatModel, chatRoom } = require("./chat-model");
+const { chatModel, chatRoom } = require("../models/chat-model");
 
 
 module.exports = (chatNamespace) => {
@@ -7,7 +7,7 @@ module.exports = (chatNamespace) => {
     console.log(`Client connected: ${socket.id}`);
 
     // Handle joining a room by roomId
-    socket.on("joinRoom", (roomId) => {
+    /*socket.on("joinRoom", (roomId) => {
       if (true) {
         socket.join(roomId);
         console.log(`Client joined room ${roomId}`);
@@ -16,7 +16,7 @@ module.exports = (chatNamespace) => {
         socket.emit("error", "Incomplete room data.");
       }
     });
-
+*/
 // Handling message event
     socket.on("message", (data) => {
       console.log("Received raw data:", data); // Log the entire data object for debugging

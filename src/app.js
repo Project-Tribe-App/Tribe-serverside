@@ -3,7 +3,7 @@ const { handleRouteErrors } = require('./error');
 const connectToMongo = require('./config/database');
 const userRouter = require('./routes/user-route')
 const authRouter = require('./routes/auth-routes');
-const chatRouter = require("./socket/chat-route");
+const chatRouter = require("./routes/chat-route")
 
 const app = express();
 

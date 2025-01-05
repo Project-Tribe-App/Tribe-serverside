@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true, // Unique constraint for username
     },
     password: {
       type: String,
@@ -19,7 +18,6 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // Unique constraint for email
       lowercase: true,
     },
     city: {
@@ -38,6 +36,10 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    squads: {
+      type: [Object],
+      default: [],
+    },
     refreshToken: {
       type: String,
       default: null,
@@ -48,12 +50,9 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Ensure unique index for username
-userSchema.index({ username: 1 }, { unique: true });
-
 // Hash password before saving user
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });

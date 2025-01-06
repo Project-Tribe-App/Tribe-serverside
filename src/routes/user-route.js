@@ -10,5 +10,6 @@ router.get('/get-profile/:username', auth, userController.getProfile);
 
 router.patch("/update-profile/:username", auth,  userController.updateUser);
 
+router.post('/checkusername', userController.checkUsername);
 
 module.exports = router; 

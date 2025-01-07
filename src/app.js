@@ -6,7 +6,6 @@ const authRouter = require('./routes/auth-routes');
 const chatRouter = require("./routes/chat-route")
 const setupGraphQLServer = require('./graphql/graphql-server');
 
-
 const app = express();
 
 //for connecting to users database

@@ -83,27 +83,3 @@ exports.updateUser = async function patchResource(req, res) {
 
   }
 };
-
-//check username
-// Function to check if a username exists
-exports.checkUsername = async (req, res) => {
-  const { username } = req.body;
-
-  if (!username) {
-      return res.status(400).json({ success: false, message: 'Username is required.' });
-  }
-
-  try {
-      // Search for the username in the database
-      const userExists = await User.findOne({ username });
-
-      if (userExists) {
-          return res.status(200).json({ success: true, message: 'Username exists.' });
-      } else {
-          return res.status(404).json({ success: false, message: 'Username not found.' });
-      }
-  } catch (error) {
-      return res.status(500).json({ success: false, message: 'Server error.', error });
-  }
-};
-

@@ -53,6 +53,7 @@ Welcome to the **Tribe API** server-side repository! This project is part of a s
 - **Node.js** (v18+)
 - **MongoDB Atlas Account**
 - **AWS Account** (for Lambda deployment)
+- **Google Cloud Account** (for Google Meet integration)
 
 ### Installation
 

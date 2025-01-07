@@ -50,25 +50,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// primary user detail schema
-
-const userPrimarySchema = new mongoose.Schema(
-  {
-    userId: {
-      type: String,
-      required: true,
-    },
-    profilePicture: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-  },
-);
-
 // Hash password before saving user
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
@@ -76,7 +57,5 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Export the userPrimarySchema for use in other models
-module.exports.userPrimarySchema = userPrimarySchema;
-// Export the user model
+// Create the model with the schema
 module.exports = mongoose.model("User", userSchema);

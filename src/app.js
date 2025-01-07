@@ -4,10 +4,11 @@ const connectToMongo = require('./config/database');
 const userRouter = require('./routes/user-route')
 const authRouter = require('./routes/auth-routes');
 const chatRouter = require("./routes/chat-route")
-const setupGraphQLServer = require('./graphql/graphql-server');
 
 
 const app = express();
+
+const port = process.env.PORT || 3000;
 
 //for connecting to users database
 connectToMongo()
@@ -18,9 +19,6 @@ app.use(express.urlencoded({ extended: true }))
 
 // routes
 app.use('/', [userRouter, authRouter, chatRouter]);
-
-// Set up GraphQL server
-setupGraphQLServer(app);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

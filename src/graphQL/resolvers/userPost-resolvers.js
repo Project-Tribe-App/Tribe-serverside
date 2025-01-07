@@ -3,7 +3,8 @@
 // this is just like controller and service section
 
 
-const { UserPost } = require('../../models/userPost'); // The ../ notation is used to navigate up one directory level. Each ../ moves up one level in the directory hierarchy.
+const { UserPost } = require('../../models/userPost'); // The ../ notation is used to navigate up one directory level. 
+// Each ../ moves up one level in the directory hierarchy.
 
 const userPostResolvers = {
     Query: {

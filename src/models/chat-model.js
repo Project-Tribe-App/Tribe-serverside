@@ -27,7 +27,7 @@ const chatModelSchema = new mongoose.Schema(
 // char room schema
 const chatRoomSchema = new mongoose.Schema(
   {
-    squadName: {type: String, required: true},
+    squadName: {type: String, unique:true,required: true},
     squadProfilePicture: {type: String, required: true},
     description: {type: String, required: true},
     roomId: {type: String, required: true},

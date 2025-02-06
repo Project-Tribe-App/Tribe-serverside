@@ -23,7 +23,7 @@ class ChatService {
   static async joinSquad(username, roomId) {
     try {
       const squad = await chatRoom.findOne({ roomId });
-      if (!room) {
+      if (!squad) {
         return new Error("Squad not found");
       }
       if (squad.members.some(member => member.username === username)) {
@@ -88,7 +88,7 @@ class ChatService {
         return new Error("Squad not found");
       }
       if (!squad.members.some(member => member.username === username)) {
-        return new Error("User already left the room");
+        return new Error("User already left the squad");
       }
       if (username === squad.adminId) {
         if (squad.members.length <= 1) {

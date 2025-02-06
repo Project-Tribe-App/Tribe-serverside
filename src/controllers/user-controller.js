@@ -24,7 +24,6 @@ exports.register = async (req, res) => {
       country
     );
 
-    console.log(response);
 
     if (response) {
       return Response.success(res, "User registered successfully");
@@ -54,7 +53,7 @@ exports.getProfile = async (req, res) => {
     if (!profile) {
       return Response.notFound(res, "User not found");
     } else {
-      return Response.success(res, profile);
+      return Response.success(res, "User profile fetched successfully",profile);
 
     }
   } catch (error) {

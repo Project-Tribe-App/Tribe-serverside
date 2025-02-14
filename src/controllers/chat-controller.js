@@ -60,7 +60,6 @@ exports.leaveSquad = async (req, res) => {
   try {
     const { username, roomId } = req.body;
     const response = await chatService.leaveSquad(username, roomId);
-
     if (response instanceof Error) {
       switch (response.message) {
         case "User not found":

@@ -90,7 +90,7 @@ exports.allUsers = async (req, res) => {
         const users = await authService.getAllUsers(); 
 
         if(users){
-            return Response.success(res, users);
+            return Response.success(res,"All users profiles are fetched succcessfully",users);
         }
         
     } catch (error) {
